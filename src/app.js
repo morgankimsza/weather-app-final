@@ -37,7 +37,7 @@ function changedWind(response) {
 function changeIcon(response) {
   let iconElement = document.querySelector("#icon");
   iconElement.src =
-    "http://openweathermap.org/img/wn/" +
+    "https://openweathermap.org/img/wn/" +
     response.data.weather[0].icon +
     "@2x.png";
 }
