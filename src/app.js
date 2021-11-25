@@ -22,29 +22,49 @@ function formatDate(date) {
 
   return `${day} ${hours}:${minutes}`;
 }
+
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
 function displayForecast(response) {
   let forecast = response.data.daily;
 
   let forecastElement = document.querySelector("#forecast");
   let forecastHTML = `<div class="row" style="padding-left: 20px;">`;
 
-  days.forEach(function (forecastDay) {
-    forecastHTML =
-      forecastHTML +
-      `
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 6) {
+      forecastHTML =
+        forecastHTML +
+        `
             <div class="col-2">
-              <div class="weather-forecast-date">${forecastDay.dt}</div>
+              <div class="weather-forecast-date">${formatDay(
+                forecastDay.dt
+              )}</div>
+    
                 <img
-                  src="https://openweathermap.org/img/wn/${forecastDay.weather[0].icon}@2x.png"
+                  src="https://openweathermap.org/img/wn/${
+                    forecastDay.weather[0].icon
+                  }@2x.png"
                   alt=""
                   width="42"
                 />
                 <div class="weather-forecast-temperature">
-                  <span class="weather-forecast-temperature-max">${forecastDay.temp.max} </span>
-                  <span class="weather-forecast-temperature-min">${forecastDay.temp.min}</span>
+                  <span class="weather-forecast-temperature-max">${Math.round(
+                    forecastDay.temp.max
+                  )} </span>
+                  <span class="weather-forecast-temperature-min">${Math.round(
+                    forecastDay.temp.min
+                  )}</span>
                 </div>
             </div>
       `;
+    }
   });
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
@@ -103,14 +123,14 @@ function convertToFahrenheit(event) {
   event.preventDefault();
   let temperatureElement = document.querySelector("#temperature");
   let farenheit = (temperatureElement.innerHTML * 9) / 5 + 32;
-  temperatureElement.innerHTML = farenheit;
+  temperatureElement.innerHTML = Math.round(farenheit);
 }
 
 function convertToCelsius(event) {
   event.preventDefault();
   let temperatureElement = document.querySelector("#temperature");
   let celsius = ((temperatureElement.innerHTML - 32) * 5) / 9;
-  temperatureElement.innerHTML = celsius;
+  temperatureElement.innerHTML = Math.round(celsius);
 }
 
 // Feature #1
